@@ -31,7 +31,6 @@ describe("GET/api/article/:article_id", () => {
       .get("/api/articles/4")
       .expect(200)
       .then(({ body }) => {
-        console.log(body.result);
         expect(typeof body.result).toBe("object");
         expect(body.result).toHaveProperty("author", expect.any(String));
         expect(body.result).toHaveProperty("title", expect.any(String));
