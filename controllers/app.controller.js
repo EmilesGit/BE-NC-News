@@ -10,13 +10,11 @@ exports.getTopics = (req, res) => {
     });
 };
 
-exports.getArticle = (req, res) => {
+exports.getArticle = (req, res, next) => {
   const { article_id } = req.params;
   selectArticle(article_id)
     .then((result) => {
       res.status(200).send({ result });
     })
-    .catch((err) => {
-      console.log(err);
-    });
+    .catch(next);
 };
