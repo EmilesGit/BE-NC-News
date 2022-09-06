@@ -63,7 +63,7 @@ describe("GET/api/article/:article_id", () => {
 });
 
 describe("GET/api/users", () => {
-  test("should return an array of user objects", () => {
+  test("should return status 200 and an array of user objects", () => {
     return request(app)
       .get("/api/users")
       .expect(200)
