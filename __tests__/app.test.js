@@ -61,3 +61,25 @@ describe("GET/api/article/:article_id", () => {
       });
   });
 });
+
+describe("PATCH/api/articles/:article_id", () => {
+  test("should update and return given article", () => {
+    const updatedArticle = {
+      article_id: 4,
+      title: "Student SUES Mitch!",
+      topic: "mitch",
+      author: "rogersop",
+      body: "We all love Mitch and his wonderful, unique typing style. However, the volume of his typing has ALLEGEDLY burst another students eardrums, and they are now suing for damages",
+      created_at: "2020-05-06T01:14:00.000Z",
+      votes: 10,
+    };
+    const newVotes = { inc_votes: 10 };
+    return request(app)
+      .patch("/api/articles/4")
+      .expect(201)
+      .send(newVotes)
+      .then(({ body }) => {
+        expect(body.updatedArticle).toEqual(updatedArticle);
+      });
+  });
+});
