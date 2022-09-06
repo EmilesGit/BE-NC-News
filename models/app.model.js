@@ -18,3 +18,9 @@ exports.selectArticle = (article_id) => {
       }
     });
 };
+
+exports.selectUser = () => {
+  return db.query("SELECT * FROM users").then((res) => {
+    return res.rows;
+  });
+};
