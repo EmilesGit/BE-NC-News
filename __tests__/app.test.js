@@ -24,3 +24,25 @@ describe("GET/api/topics", () => {
       });
   });
 });
+
+describe("GET/api/users", () => {
+  test("should return an array of user objects", () => {
+    return request(app)
+      .get("/api/users")
+      .expect(200)
+      .then(({ body }) => {
+        console.log(body);
+        expect(Array.isArray(body)).toBe(true);
+        expect(body.length > 0).toBe(true);
+        body.forEach((obj) => {
+          expect(obj).toEqual(
+            expect.objectContaining({
+              username: expect.any(String),
+              name: expect.any(String),
+              avatar_url: expect.any(String),
+            })
+          );
+        });
+      });
+  });
+});

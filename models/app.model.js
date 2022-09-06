@@ -6,3 +6,9 @@ exports.selectTopics = () => {
     return res.rows;
   });
 };
+
+exports.selectUser = () => {
+  return db.query("SELECT * FROM users").then((res) => {
+    return res.rows;
+  });
+};
