@@ -44,24 +44,6 @@ describe("GET/api/article/:article_id", () => {
         expect(body.result).toEqual(id_4);
       });
   });
-  test("should return an article object for given ID", () => {
-    const id_3 = {
-      article_id: 3,
-      title: "Eight pug gifs that remind me of mitch",
-      topic: "mitch",
-      author: "icellusedkars",
-      body: "some gifs",
-      created_at: "2020-11-03T09:12:00.000Z",
-      votes: 0,
-    };
-    return request(app)
-      .get("/api/articles/3")
-      .expect(200)
-      .then(({ body }) => {
-        expect(typeof body.result).toBe("object");
-        expect(body.result).toEqual(id_3);
-      });
-  });
   test("should return 404: article ID not found when given ID which may not exist yet", () => {
     return request(app)
       .get("/api/articles/9999")
