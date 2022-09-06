@@ -4,6 +4,7 @@ const {
   getTopics,
   getArticle,
   getUsers,
+  updateArticle,
 } = require("./controllers/app.controller");
 const {
   handleCustomErrors,
@@ -11,9 +12,13 @@ const {
   handleServerErrors,
 } = require("./errors");
 
+app.use(express.json());
+
 app.get("/api/topics", getTopics);
 
 app.get("/api/articles/:article_id", getArticle);
+
+app.patch("/api/articles/:article_id", updateArticle);
 
 app.get("/api/users", getUsers);
 
