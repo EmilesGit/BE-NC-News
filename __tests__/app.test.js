@@ -63,7 +63,7 @@ describe("GET/api/article/:article_id", () => {
 });
 
 describe("PATCH/api/articles/:article_id", () => {
-  test("should update and return given article", () => {
+  test("201 should update and return and given article", () => {
     const updatedArticle = {
       article_id: 4,
       title: "Student SUES Mitch!",
@@ -80,6 +80,16 @@ describe("PATCH/api/articles/:article_id", () => {
       .send(newVotes)
       .then(({ body }) => {
         expect(body.updatedArticle).toEqual(updatedArticle);
+      });
+  });
+  test("should return status 400 and error message when given invalid input", () => {
+    const newVotes = { inc_votes: "loads" };
+    return request(app)
+      .patch("/api/articles/4")
+      .expect(400)
+      .send(newVotes)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid input");
       });
   });
 });

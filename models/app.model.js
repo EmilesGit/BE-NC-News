@@ -26,7 +26,6 @@ exports.amendArticle = (article_id, change) => {
       [change, article_id]
     )
     .then((result) => {
-      console.log(result.rows);
       return result.rows[0];
     });
 };

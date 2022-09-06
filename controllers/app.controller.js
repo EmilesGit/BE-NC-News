@@ -23,10 +23,12 @@ exports.getArticle = (req, res, next) => {
     .catch(next);
 };
 
-exports.updateArticle = (req, res) => {
+exports.updateArticle = (req, res, next) => {
   const { article_id } = req.params;
   const { inc_votes } = req.body;
-  amendArticle(article_id, inc_votes).then((updatedArticle) => {
-    res.status(201).send({ updatedArticle });
-  });
+  amendArticle(article_id, inc_votes)
+    .then((updatedArticle) => {
+      res.status(201).send({ updatedArticle });
+    })
+    .catch(next);
 };
