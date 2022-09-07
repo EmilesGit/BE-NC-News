@@ -108,7 +108,7 @@ describe("GET/api/articles", () => {
         expect(body.articles[0]).toEqual(catArticle);
       });
   });
-  test("should return 404 and error message if given topic is not found", () => {
+  test.only("should return 404 and error message if given topic is not found", () => {
     return request(app)
       .get("/api/articles/?topic=dogs")
       .expect(404)
