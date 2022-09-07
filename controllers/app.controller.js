@@ -2,6 +2,7 @@ const {
   selectTopics,
   selectArticle,
   amendArticle,
+  selectUser,
 } = require("../models/app.model");
 
 exports.getTopics = (req, res) => {
@@ -31,4 +32,10 @@ exports.updateArticle = (req, res, next) => {
       res.status(201).send({ updatedArticle });
     })
     .catch(next);
+};
+
+exports.getUsers = (req, res) => {
+  selectUser().then((users) => {
+    res.status(200).send({ users });
+  });
 };

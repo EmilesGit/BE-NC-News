@@ -29,3 +29,9 @@ exports.amendArticle = (article_id, change) => {
       return result.rows[0];
     });
 };
+
+exports.selectUser = () => {
+  return db.query("SELECT * FROM users").then((res) => {
+    return res.rows;
+  });
+};
