@@ -41,7 +41,7 @@ describe("GET/api/article/:article_id", () => {
       .expect(200)
       .then(({ body }) => {
         expect(typeof body.result).toBe("object");
-        expect(body.result).toEqual(id_4);
+        expect(body.result).toEqual(expect.objectContaining(id_4));
       });
   });
   test("should return 404: article ID not found when given ID which may not exist yet", () => {
@@ -109,6 +109,36 @@ describe("PATCH/api/articles/:article_id", () => {
       .patch("/api/articles/4")
       .expect(400)
       .send(newVotes)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid input");
+      });
+  });
+});
+
+describe("GET /api/articles/:article_id (comment count)", () => {
+  test("should return status 200 and article_id object now containing comment_count key", () => {
+    const newArticle = {
+      article_id: 3,
+      title: "Eight pug gifs that remind me of mitch",
+      topic: "mitch",
+      author: "icellusedkars",
+      body: "some gifs",
+      created_at: "2020-11-03T09:12:00.000Z",
+      votes: 0,
+      comment_count: "2",
+    };
+    return request(app)
+      .get("/api/articles/3")
+      .expect(200)
+      .then(({ body }) => {
+        expect(typeof body.result).toBe("object");
+        expect(body.result).toEqual(newArticle);
+      });
+  });
+  test("should return status 400 and error message if given invalid input", () => {
+    return request(app)
+      .get("/api/articles/favourite")
+      .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("Invalid input");
       });
