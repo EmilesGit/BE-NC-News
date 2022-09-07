@@ -3,6 +3,8 @@ const app = express();
 const {
   getTopics,
   getArticle,
+  getUsers,
+  updateArticle,
   getArticleId,
 } = require("./controllers/app.controller");
 const {
@@ -11,11 +13,17 @@ const {
   handleServerErrors,
 } = require("./errors");
 
+app.use(express.json());
+
 app.get("/api/topics", getTopics);
 
 app.get("/api/articles", getArticle);
 
 app.get("/api/articles/:article_id", getArticleId);
+
+app.patch("/api/articles/:article_id", updateArticle);
+
+app.get("/api/users", getUsers);
 
 app.all("/*", (req, res) => {
   res.status(404).send({ msg: "Path not found" });
