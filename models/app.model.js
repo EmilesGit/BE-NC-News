@@ -15,7 +15,11 @@ exports.selectArticle = (topic) => {
         [topic]
       )
       .then((res) => {
-        return res.rows;
+        if (res.rows.length === 0) {
+          return Promise.reject({ status: 404, msg: `${topic} not found` });
+        } else {
+          return res.rows;
+        }
       });
   } else {
     return db

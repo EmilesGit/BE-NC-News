@@ -103,8 +103,17 @@ describe("GET/api/articles", () => {
       .get("/api/articles/?topic=cats")
       .expect(200)
       .then(({ body }) => {
+        console.log(body.articles);
         expect(Array.isArray(body.articles)).toBe(true);
         expect(body.articles[0]).toEqual(catArticle);
+      });
+  });
+  test("should return 404 and error message if given topic is not found", () => {
+    return request(app)
+      .get("/api/articles/?topic=dogs")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("dogs not found");
       });
   });
 });
