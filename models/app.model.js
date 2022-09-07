@@ -21,7 +21,6 @@ exports.selectArticle = (topic) => {
 
   {
     return db.query(queryStr, queryValues).then((res) => {
-      console.log(queryStr);
       if (res.rows.length === 0) {
         return Promise.reject({ status: 404, msg: `${topic} not found` });
       } else {
