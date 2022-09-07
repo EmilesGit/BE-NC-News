@@ -4,6 +4,7 @@ const {
   amendArticle,
   selectUser,
   selectArticleId,
+  selectComments,
 } = require("../models/app.model");
 
 exports.getTopics = (req, res) => {
@@ -48,4 +49,13 @@ exports.getUsers = (req, res) => {
   selectUser().then((users) => {
     res.status(200).send({ users });
   });
+};
+
+exports.getComments = (req, res, next) => {
+  const { article_id } = req.params;
+  selectComments(article_id)
+    .then((comments) => {
+      res.status(200).send({ comments });
+    })
+    .catch(next);
 };

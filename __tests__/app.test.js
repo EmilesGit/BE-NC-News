@@ -199,3 +199,33 @@ describe("GET/api/articles", () => {
       });
   });
 });
+
+describe("GET /api/articles/:article_id/comments", () => {
+  test("should return an array of comments for given article ID", () => {
+    return request(app)
+      .get("/api/articles/1/comments")
+      .expect(200)
+      .then(({ body }) => {
+        expect(Array.isArray(body.comments)).toBe(true);
+        body.comments.forEach((comment) => {
+          expect(comment).toEqual(
+            expect.objectContaining({
+              author: expect.any(String),
+              body: expect.any(String),
+              comment_id: expect.any(Number),
+              created_at: expect.any(String),
+              votes: expect.any(Number),
+            })
+          );
+        });
+      });
+  });
+  test("should return 404 and error message if article ID not found", () => {
+    return request(app)
+      .get("/api/articles/11111/comments")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("11111 not found");
+      });
+  });
+});
