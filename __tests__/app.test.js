@@ -3,6 +3,7 @@ const request = require("supertest");
 const db = require("../db/connection");
 const testData = require("../db/data/test-data");
 const seed = require("../db/seeds/seed");
+const { toBeSortedBy } = require("jest-sorted");
 afterAll(() => db.end());
 
 beforeEach(() => {
@@ -58,6 +59,52 @@ describe("GET/api/article/:article_id", () => {
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("Invalid input");
+      });
+  });
+});
+
+describe("GET/api/articles", () => {
+  test("should return status 200 and array of article objects", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then(({ body }) => {
+        expect(Array.isArray(body.articles)).toBe(true);
+        expect(body.articles.length).not.toBe(0);
+        expect(body.articles).toBeSortedBy("created_at", { descending: true });
+        body.articles.forEach((article) => {
+          expect(article).toEqual(
+            expect.objectContaining({
+              article_id: expect.any(Number),
+              title: expect.any(String),
+              topic: expect.any(String),
+              author: expect.any(String),
+              body: expect.any(String),
+              created_at: expect.any(String),
+              votes: expect.any(Number),
+              comment_count: expect.any(String),
+            })
+          );
+        });
+      });
+  });
+  test("should return status 200 and an array of article objects with given topic", () => {
+    const catArticle = {
+      article_id: 5,
+      title: "UNCOVERED: catspiracy to bring down democracy",
+      topic: "cats",
+      author: "rogersop",
+      body: "Bastet walks amongst us, and the cats are taking arms!",
+      created_at: "2020-08-03T13:14:00.000Z",
+      votes: 0,
+      comment_count: "2",
+    };
+    return request(app)
+      .get("/api/articles/?topic=cats")
+      .expect(200)
+      .then(({ body }) => {
+        expect(Array.isArray(body.articles)).toBe(true);
+        expect(body.articles[0]).toEqual(catArticle);
       });
   });
 });
