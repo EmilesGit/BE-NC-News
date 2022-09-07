@@ -111,7 +111,6 @@ describe("GET /api/articles/:article_id (comment count)", () => {
       .expect(200)
       .then(({ body }) => {
         expect(typeof body.result).toBe("object");
-        expect(body.result).toHaveProperty("comment_count");
         expect(body.result).toEqual(newArticle);
       });
   });
