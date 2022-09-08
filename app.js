@@ -12,7 +12,7 @@ const {
   handleCustomErrors,
   handlePsqlErrors,
   handleServerErrors,
-} = require("./errors");
+} = require("./errors/errors");
 
 app.use(express.json());
 
