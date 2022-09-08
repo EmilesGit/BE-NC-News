@@ -199,3 +199,49 @@ describe("GET/api/articles", () => {
       });
   });
 });
+
+describe("GET /api/articles/:article_id/comments", () => {
+  test("should return an array of comments for given article ID", () => {
+    return request(app)
+      .get("/api/articles/1/comments")
+      .expect(200)
+      .then(({ body }) => {
+        expect(Array.isArray(body.comments)).toBe(true);
+        body.comments.forEach((comment) => {
+          expect(comment).toEqual(
+            expect.objectContaining({
+              author: expect.any(String),
+              body: expect.any(String),
+              comment_id: expect.any(Number),
+              created_at: expect.any(String),
+              votes: expect.any(Number),
+            })
+          );
+        });
+      });
+  });
+  test("should return empty array if article has no comments", () => {
+    return request(app)
+      .get("/api/articles/2/comments")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.comments).toEqual([]);
+      });
+  });
+  test("should return 404 and error message if article ID not found", () => {
+    return request(app)
+      .get("/api/articles/11111/comments")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("11111 not found");
+      });
+  });
+  test("should return 400 and error message when given invalid input", () => {
+    return request(app)
+      .get("/api/articles/favourite/comments")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid input");
+      });
+  });
+});

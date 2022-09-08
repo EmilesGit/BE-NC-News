@@ -6,6 +6,7 @@ const {
   getUsers,
   updateArticle,
   getArticleId,
+  getComments,
 } = require("./controllers/app.controller");
 const {
   handleCustomErrors,
@@ -20,6 +21,8 @@ app.get("/api/topics", getTopics);
 app.get("/api/articles", getArticle);
 
 app.get("/api/articles/:article_id", getArticleId);
+
+app.get("/api/articles/:article_id/comments", getComments);
 
 app.patch("/api/articles/:article_id", updateArticle);
 

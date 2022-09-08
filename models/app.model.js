@@ -1,5 +1,6 @@
 const db = require("../db/connection");
 const format = require("pg-format");
+const { checkExists } = require("../db/seeds/utils");
 
 exports.selectTopics = () => {
   return db.query("SELECT * FROM topics;").then((res) => {
@@ -57,4 +58,19 @@ exports.selectUser = () => {
   return db.query("SELECT * FROM users").then((res) => {
     return res.rows;
   });
+};
+
+exports.selectComments = (article_id) => {
+  return db
+    .query(
+      "SELECT DISTINCT comment_id, votes, created_at, author, body  FROM comments WHERE comments.article_id =$1",
+      [article_id]
+    )
+    .then((res) => {
+      if (res.rows.length === 0) {
+        return checkExists("articles", "article_id", article_id);
+      } else {
+        return res.rows;
+      }
+    });
 };
