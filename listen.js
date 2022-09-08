@@ -1,4 +1,4 @@
-const { PORT = 9090 } = process.env.PORT;
+const { PORT } = process.env.PORT;
 
 app.listen(PORT, (err) => {
   if (err) throw err;
