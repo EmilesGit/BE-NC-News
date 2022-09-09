@@ -21,7 +21,6 @@ exports.selectArticle = (topic, sortBy = "created_at", order = "desc") => {
     queryStr += " GROUP BY articles.article_id ORDER BY %I %s";
   }
   const formattedQuery = format(queryStr, sortBy, order);
-  console.log(formattedQuery);
   return db.query(formattedQuery, queryValues).then((res) => {
     if (res.rows.length === 0) {
       return Promise.reject({ status: 404, msg: `${topic} not found` });
