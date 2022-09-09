@@ -313,7 +313,6 @@ describe("GET /api/articles (queries)", () => {
       .get("/api/articles?sort_by=votes&order=asc")
       .expect(200)
       .then(({ body }) => {
-        //console.log(body.articles);
         expect(Array.isArray(body.articles)).toBe(true);
         expect(body.articles.length).not.toBe(0);
         expect(body.articles).toBeSortedBy("votes", { descending: false });
