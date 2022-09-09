@@ -296,3 +296,27 @@ describe("POST /api/articles/:article_id/comments", () => {
       });
   });
 });
+
+describe("GET /api/articles (queries)", () => {
+  test("should return articles sorted by date in descending order by default", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then(({ body }) => {
+        expect(Array.isArray(body.articles)).toBe(true);
+        expect(body.articles.length).not.toBe(0);
+        expect(body.articles).toBeSortedBy("created_at", { descending: true });
+      });
+  });
+  test("should return articles sorted by given values", () => {
+    return request(app)
+      .get("/api/articles?sort_by=votes&order=asc")
+      .expect(200)
+      .then(({ body }) => {
+        //console.log(body.articles);
+        expect(Array.isArray(body.articles)).toBe(true);
+        expect(body.articles.length).not.toBe(0);
+        expect(body.articles).toBeSortedBy("votes", { descending: false });
+      });
+  });
+});
