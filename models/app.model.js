@@ -74,3 +74,14 @@ exports.selectComments = (article_id) => {
       }
     });
 };
+
+exports.addComment = (article_id, username, comment) => {
+  return db
+    .query(
+      "INSERT INTO comments (body, author, article_id) VALUES ($1, $2, $3) RETURNING *",
+      [comment, username, article_id]
+    )
+    .then((result) => {
+      return result.rows[0];
+    });
+};

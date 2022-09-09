@@ -245,3 +245,20 @@ describe("GET /api/articles/:article_id/comments", () => {
       });
   });
 });
+
+describe("POST /api/articles/:article_id/comments", () => {
+  test.only("should add a comment to given article ID", () => {
+    const newComment = {
+      username: "icellusedkars",
+      comment: "Is this even going to work?",
+    };
+    return request(app)
+      .post("/api/articles/2/comments")
+      .expect(201)
+      .send(newComment)
+      .then(({ body }) => {
+        expect(body.comment.body).toEqual(newComment.comment);
+        expect(body.comment.author).toBe(newComment.username);
+      });
+  });
+});
