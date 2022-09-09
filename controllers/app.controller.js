@@ -5,6 +5,7 @@ const {
   selectUser,
   selectArticleId,
   selectComments,
+  addComment,
 } = require("../models/app.model");
 
 exports.getTopics = (req, res) => {
@@ -38,6 +39,7 @@ exports.getArticleId = (req, res, next) => {
 exports.updateArticle = (req, res, next) => {
   const { article_id } = req.params;
   const { inc_votes } = req.body;
+  console.log(req.body);
   amendArticle(article_id, inc_votes)
     .then((updatedArticle) => {
       res.status(201).send({ updatedArticle });
@@ -56,6 +58,16 @@ exports.getComments = (req, res, next) => {
   selectComments(article_id)
     .then((comments) => {
       res.status(200).send({ comments });
+    })
+    .catch(next);
+};
+
+exports.newComment = (req, res, next) => {
+  const { article_id } = req.params;
+  const { username, comment } = req.body;
+  addComment(article_id, username, comment)
+    .then((comment) => {
+      res.status(201).send({ comment });
     })
     .catch(next);
 };
