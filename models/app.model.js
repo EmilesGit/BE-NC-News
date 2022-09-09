@@ -9,18 +9,20 @@ exports.selectTopics = () => {
   });
 };
 
-exports.selectArticle = (topic) => {
+exports.selectArticle = (topic, sortBy = "created_at", order = "desc") => {
   let queryValues = [];
   let queryStr =
     "SELECT articles.*, COUNT (comment_id) AS comment_count FROM articles LEFT JOIN comments ON comments.article_id = articles.article_id";
 
   if (topic) {
     queryValues.push(topic);
-    queryStr += ` WHERE articles.topic = $1 GROUP BY articles.article_id ORDER BY created_at DESC`;
+    queryStr += ` WHERE articles.topic = $1 GROUP BY articles.article_id ORDER BY %I %s`;
   } else {
-    queryStr += " GROUP BY articles.article_id ORDER BY created_at DESC";
+    queryStr += " GROUP BY articles.article_id ORDER BY %I %s";
   }
-  return db.query(queryStr, queryValues).then((res) => {
+  const formattedQuery = format(queryStr, sortBy, order);
+  console.log(formattedQuery);
+  return db.query(formattedQuery, queryValues).then((res) => {
     if (res.rows.length === 0) {
       return Promise.reject({ status: 404, msg: `${topic} not found` });
     } else {

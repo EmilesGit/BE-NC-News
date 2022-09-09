@@ -19,8 +19,9 @@ exports.getTopics = (req, res) => {
 };
 
 exports.getArticle = (req, res, next) => {
-  const { topic } = req.query;
-  selectArticle(topic)
+  const { topic, sort_by, order } = req.query;
+
+  selectArticle(topic, sort_by, order)
     .then((articles) => {
       res.status(200).send({ articles });
     })
@@ -39,7 +40,7 @@ exports.getArticleId = (req, res, next) => {
 exports.updateArticle = (req, res, next) => {
   const { article_id } = req.params;
   const { inc_votes } = req.body;
-  console.log(req.body);
+
   amendArticle(article_id, inc_votes)
     .then((updatedArticle) => {
       res.status(201).send({ updatedArticle });
